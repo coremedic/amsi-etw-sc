@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.30)
 set(CMAKE_OSX_ARCHITECTURES x86_64)
-project(asmi_etw_sc)
+project(amsi_etw_sc)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -23,7 +23,12 @@ add_link_options(
         -Wl,--as-needed,--no-whole-archive
 )
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+file(GLOB_RECURSE ALL_CXX_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE ALL_C_FILES "${PROJECT_SOURCE_DIR}/src/*.c")
+file(GLOB_RECURSE ALL_CXX_HEADER_FILES "${PROJECT_SOURCE_DIR}/include/*.hpp")
+file(GLOB_RECURSE ALL_C_HEADER_FILES "${PROJECT_SOURCE_DIR}/include/*.h")
+
+set_source_files_properties(${ALL_C_FILES} PROPERTIES LANGUAGE CXX)
 
 include_directories(include)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -33,31 +38,37 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(asmi_etw_sc
+add_executable(amsi_etw_sc
         src/main.cpp
         src/PreMain.cpp
+        src/Ldr.c
         include/Common.h
+        include/Instance.h
+        include/Ntdll.h
+        include/Macros.h
+        include/Constexpr.h
+        include/Ldr.h
 )
 
-target_link_libraries(asmi_etw_sc -nostdlib -nodefaultlibs)
+target_link_libraries(amsi_etw_sc -nostdlib -nodefaultlibs)
 
 set(ASM_SOURCE_FILES
-
+    asm/x64/Loader.asm
 )
 
 foreach(ASM_SRC IN LISTS ASM_SOURCE_FILES)
     get_filename_component(ASM_OBJ ${ASM_SRC} NAME_WE)
     set(ASM_OBJ ${CMAKE_CURRENT_BINARY_DIR}/${ASM_OBJ}.obj)
     add_custom_command(OUTPUT ${ASM_OBJ}
-            COMMAND nasm -f win64 -coff ${CMAKE_CURRENT_SOURCE_DIR}/${ASM_SRC} ${ASM_OBJ}
+            COMMAND nasm -f win64 ${CMAKE_CURRENT_SOURCE_DIR}/${ASM_SRC} -o ${ASM_OBJ}
             DEPENDS ${ASM_SRC}
             COMMENT "Assembling ${ASM_SRC}"
     )
-    target_sources(asmi_etw_sc PRIVATE ${ASM_OBJ})
+    target_sources(amsi_etw_sc PRIVATE ${ASM_OBJ})
 endforeach()
 
-add_custom_command(TARGET asmi_etw_sc POST_BUILD
-        COMMAND python3 scripts/extract.py -f $<TARGET_FILE:asmi_etw_sc> -o ${CMAKE_CURRENT_SOURCE_DIR}/asmi_etw_sc.x64.bin
-        COMMENT "Building shellcode: asmi_etw_sc.x64.bin"
+add_custom_command(TARGET amsi_etw_sc POST_BUILD
+        COMMAND python3 scripts/extract.py -f $<TARGET_FILE:amsi_etw_sc> -o ${CMAKE_CURRENT_SOURCE_DIR}/amsi_etw_sc.x64.bin
+        COMMENT "Building shellcode: amsi_etw_sc.x64.bin"
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )

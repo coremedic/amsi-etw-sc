@@ -4,8 +4,6 @@ DEFAULT REL
 EXTERN PreMain
 
 GLOBAL Start
-GLOBAL StRipStart
-GLOBAL StRipEnd
 
 [SECTION .text$A]
 
@@ -19,25 +17,6 @@ GLOBAL StRipEnd
         pop   rsi
         ret
 
-    StRipStart:
-        call StRipPtrStart
-        ret
-
-    StRipPtrStart:
-        mov	rax, [rsp]
-        sub rax, 0x1b
-        ret
-
-[SECTION .text$D]
-
-    StRipEnd:
-        call StRetPtrEnd
-        ret
-
-    StRetPtrEnd:
-        mov rax, [rsp] ;; get the return address
-        add	rax, 0xb   ;; get implant end address
-        ret
 
 [SECTION .text$E]
 
