@@ -9,10 +9,18 @@ typedef struct _INSTANCE {
     struct {
         struct {
             API(RtlAddVectoredExceptionHandler)
+#ifdef DEBUG
+            API(LoadLibraryA)
+            API(MessageBoxA)
+#endif
         } Api;
 
         struct {
             PVOID Ntdll;
+            PVOID Kernel32;
+#ifdef DEBUG
+            PVOID User32;
+#endif
         } Modules;
     } Win32;
 } INSTANCE, *PINSTANCE;

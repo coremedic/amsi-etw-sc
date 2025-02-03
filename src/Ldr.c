@@ -90,3 +90,14 @@ PVOID LdrFunction(_In_ PVOID module, _In_ ULONG functionHash) {
 
     return address;
 }
+
+SECTION(B)
+VOID ZeroMem(PVOID ptr, SIZE_T cnt) {
+    // Cast void pointer to volatile char pointer
+    volatile PCHAR volPtr = (volatile PCHAR)ptr;
+
+    // Zero memory
+    while (cnt--) {
+        *volPtr++ = 0;
+    }
+}

@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 #ifdef DEBUG
         printf("[!] Usage: %s <payload.bin>\n", argv[0]);
 #endif
-        argv[1] = "..\\..\\..\\..\\amsi-etw-ec.bin";
+        argv[1] = "..\\..\\..\\amsi-etw-sc.x64.bin";
     }
 
     pPayloadFile = LoadFile(argv[1], &sPayload);

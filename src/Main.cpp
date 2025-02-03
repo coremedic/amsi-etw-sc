@@ -2,5 +2,8 @@
 
 SECTION(B)
 VOID Main() {
-    auto pInstance = GlobalInstance::Get();
+    PINSTANCE pInstance = GlobalInstance::Get();
+
+    pInstance->Win32.Api.MessageBoxA(NULL, "AYOO", "AYOOO", MB_OK | MB_ICONINFORMATION);
+    return;
 }

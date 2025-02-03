@@ -68,7 +68,7 @@ foreach(ASM_SRC IN LISTS ASM_SOURCE_FILES)
 endforeach()
 
 add_custom_command(TARGET amsi_etw_sc POST_BUILD
-        COMMAND python3 scripts/extract.py -f $<TARGET_FILE:amsi_etw_sc> -o ${CMAKE_CURRENT_SOURCE_DIR}/amsi_etw_sc.x64.bin
+        COMMAND python3 scripts/extract.py -f $<TARGET_FILE:amsi_etw_sc> -o ${CMAKE_CURRENT_SOURCE_DIR}/amsi-etw-sc.x64.bin
         COMMENT "Building shellcode: amsi_etw_sc.x64.bin"
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
