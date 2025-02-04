@@ -42,12 +42,14 @@ add_executable(amsi_etw_sc
         src/main.cpp
         src/PreMain.cpp
         src/Ldr.c
+        src/HWBP.cpp
         include/Common.h
         include/Instance.h
         include/Ntdll.h
         include/Macros.h
         include/Constexpr.h
         include/Ldr.h
+        include/HWBP.h
 )
 
 target_link_libraries(amsi_etw_sc -nostdlib -nodefaultlibs)
@@ -60,7 +62,7 @@ foreach(ASM_SRC IN LISTS ASM_SOURCE_FILES)
     get_filename_component(ASM_OBJ ${ASM_SRC} NAME_WE)
     set(ASM_OBJ ${CMAKE_CURRENT_BINARY_DIR}/${ASM_OBJ}.obj)
     add_custom_command(OUTPUT ${ASM_OBJ}
-            COMMAND nasm -f win64 ${CMAKE_CURRENT_SOURCE_DIR}/${ASM_SRC} -o ${ASM_OBJ}
+            COMMAND ${NASM_BIN} -f win64 ${CMAKE_CURRENT_SOURCE_DIR}/${ASM_SRC} -o ${ASM_OBJ}
             DEPENDS ${ASM_SRC}
             COMMENT "Assembling ${ASM_SRC}"
     )
