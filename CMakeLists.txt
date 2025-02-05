@@ -42,7 +42,7 @@ add_executable(amsi_etw_sc
         src/main.cpp
         src/PreMain.cpp
         src/Ldr.c
-        src/HWBP.cpp
+        src/HWBP.c
         include/Common.h
         include/Instance.h
         include/Ntdll.h

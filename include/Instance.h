@@ -23,6 +23,10 @@ typedef struct _INSTANCE {
 #endif
         } Modules;
     } Win32;
+    struct {
+        CRITICAL_SECTION CriticalSection;
+        HARDWARE_ENG
+    } Global;
 } INSTANCE, *PINSTANCE;
 
 template<typename T>
